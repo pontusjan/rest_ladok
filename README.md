@@ -9,7 +9,7 @@
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/ladok-rest-service.git
+   git clone https://github.com/pontusjan/ladok-rest-service.git
    cd ladok-rest-service
    ```
 
@@ -39,7 +39,7 @@
 
 ## API Endpoints
 
-**Register result (/reg_resultat)**
+### 1. Register result (/reg_resultat)
 
 Send a JSON object to the endpoint /reg_resultat with the following fields:
 | Field         | Type   | Description                                                      |
@@ -51,40 +51,37 @@ Send a JSON object to the endpoint /reg_resultat with the following fields:
 | betyg         | string | Grade, must be one of "U", "G", "G#" or "VG"                     |
 
 
-**Example responses**
+#### Example responses
 
-Success:
+**Success:**
+```bash
+{
+"status": "success",
+"message": "Transaction registered successfully.",
+"data": {
+    "personnummer": "199001011234",
+    "kurskod": "D0031N",
+    "modul": "0005",
+    "datum": "2023-10-15",
+    "betyg": "G"
+    }
+}
+```
 
-    ```bash
-    {
-    "status": "success",
-    "message": "Transaction registered successfully.",
-    "data": {
-        "personnummer": "199001011234",
-        "kurskod": "D0031N",
-        "modul": "0005",
-        "datum": "2023-10-15",
-        "betyg": "G"
+**Failure:**
+```bash
+{
+"status": "error",
+"message": "Validation failed.",
+"errors": [
+        {
+        "id": 1,
+        "message": "personnummer must be either 10 or 12 digits, no dash."
+        },
+        {
+        "id": 2,
+        "message": "kurskod must be in the format Letter, 4 numbers, Letter (e.g., \"D0031N\")."
         }
-    }
-    ```
-
-
-Failure:
-
-    ```bash
-    {
-    "status": "error",
-    "message": "Validation failed.",
-    "errors": [
-            {
-            "id": 1,
-            "message": "personnummer must be either 10 or 12 digits, no dash."
-            },
-            {
-            "id": 2,
-            "message": "kurskod must be in the format Letter, 4 numbers, Letter (e.g., \"D0031N\")."
-            }
-        ]
-    }
-    ```
+    ]
+}
+```
