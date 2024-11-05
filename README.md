@@ -40,6 +40,7 @@
 ## API Endpoints
 
 **Register result (/reg_resultat)**
+
 Send a JSON object to the endpoint /reg_resultat with the following fields:
 | Field         | Type   | Description                                                      |
 |---------------|--------|------------------------------------------------------------------|
@@ -51,7 +52,8 @@ Send a JSON object to the endpoint /reg_resultat with the following fields:
 
 
 **Example responses**
-    Success:
+
+Success:
 
     ```bash
     {
@@ -67,7 +69,8 @@ Send a JSON object to the endpoint /reg_resultat with the following fields:
     }
     ```
 
-    Failure:
+
+Failure:
 
     ```bash
     {
