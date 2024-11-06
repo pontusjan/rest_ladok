@@ -1,8 +1,11 @@
 import express, { Application, Request, Response } from "express";
 import regResultatRouter from "./routes/regResultat";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app: Application = express();
-const PORT: number = 8000;
+const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 
 app.use(express.json());
 

@@ -20,6 +20,13 @@
     npm install
     ```
 
+3. **Initialize the Database**
+
+    Run the initialization script to create necessary tables in the database:
+    ```bash
+    npm run init-db
+    ```
+
 ## Running the Server
 
 1. **Build the project**

@@ -1,8 +1,25 @@
 import { Router, Request, Response } from "express";
+import sqlite3 from "sqlite3";
+import { open } from "sqlite";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const router: Router = Router();
+let db: any;
 
-router.post("/", (req: Request, res: Response): void => {
+const initDB = async () => {
+   db = await open({
+      filename: process.env.DATABASE_FILE || "./database/database.sqlite",
+      driver: sqlite3.Database,
+   });
+};
+
+initDB().catch((err) => {
+   console.error("Failed to initialize the database:", err);
+});
+
+router.post("/", async (req: Request, res: Response): Promise<void> => {
    const { personnummer, kurskod, modul, datum, betyg } = req.body;
 
    const errors: string[] = [];
@@ -47,19 +64,47 @@ router.post("/", (req: Request, res: Response): void => {
       return;
    }
 
-   // Simulated Ladok registration logic
-   // For now, we'll assume the registration is always successful if the input is valid
-   res.status(200).json({
-      status: "success",
-      message: "Transaction registered successfully.",
-      data: {
-         personnummer,
-         kurskod,
-         modul,
-         datum,
-         betyg,
-      },
-   });
+   try {
+      // Check if a record with the same personnummer, kurskod, and modul exists
+      const existingRecord = await db.get(
+         `SELECT * FROM results WHERE personnummer = ? AND kurskod = ? AND modul = ?`,
+         [personnummer, kurskod, modul]
+      );
+
+      if (existingRecord) {
+         res.status(409).json({
+            status: "error",
+            message:
+               "A record with the same personnummer, kurskod, and modul already exists.",
+         });
+         return;
+      }
+
+      // Insert the new record
+      await db.run(
+         `INSERT INTO results (personnummer, kurskod, modul, datum, betyg) VALUES (?, ?, ?, ?, ?)`,
+         [personnummer, kurskod, modul, datum, betyg]
+      );
+
+      // Respond with success
+      res.status(200).json({
+         status: "success",
+         message: "Transaction registered successfully.",
+         data: {
+            personnummer,
+            kurskod,
+            modul,
+            datum,
+            betyg,
+         },
+      });
+   } catch (error) {
+      console.error("Database error:", error);
+      res.status(500).json({
+         status: "error",
+         message: "Internal server error.",
+      });
+   }
 });
 
 export default router;
