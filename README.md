@@ -42,7 +42,7 @@
     npm start
     ```
 
-**Server url:** http://localhost:8000
+**Server url:** http://localhost:8080
 
 ## API Endpoints
 
