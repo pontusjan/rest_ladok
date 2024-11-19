@@ -20,6 +20,7 @@ initDB().catch((err) => {
 });
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
+   console.log("POST /regResultat");
    const { personnummer, kurskod, modul, datum, betyg } = req.body;
 
    const errors: string[] = [];
@@ -86,6 +87,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
          [personnummer, kurskod, modul, datum, betyg]
       );
 
+      console.log("Transaction registered successfully.");
       // Respond with success
       res.status(200).json({
          status: "success",

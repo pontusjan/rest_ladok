@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import regResultatRouter from "./routes/regResultat";
+import getResultatRouter from "./routes/getResultat";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,6 +15,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/reg_resultat", regResultatRouter);
+app.use("/get_resultat", getResultatRouter);
 
 app.listen(PORT, () => {
    console.log(`Ladok server is running at http://localhost:${PORT}`);
