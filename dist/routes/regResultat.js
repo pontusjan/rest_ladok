@@ -29,8 +29,8 @@ initDB().catch((err) => {
     console.error("Failed to initialize the database:", err);
 });
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("POST /regResultat");
-    const { personnummer, kurskod, modul, datum, betyg } = req.body;
+    var { personnummer, kurskod, modul, datum, betyg } = req.body;
+    console.log("Received request:", req.body);
     const errors = [];
     if (!/^\d{10}$|^\d{12}$/.test(personnummer)) {
         errors.push("personnummer must be either 10 or 12 digits, no dash.");
@@ -66,6 +66,10 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     try {
+        //Convert the "personnummer", so that if it's 12 digits, it's converted to 10 digits by removing the first 2
+        if (personnummer.length === 12) {
+            personnummer = personnummer.substring(2);
+        }
         // Check if a record with the same personnummer, kurskod, and modul exists
         const existingRecord = yield db.get(`SELECT * FROM results WHERE personnummer = ? AND kurskod = ? AND modul = ?`, [personnummer, kurskod, modul]);
         if (existingRecord) {
